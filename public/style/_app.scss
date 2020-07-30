@@ -19,8 +19,14 @@
     }
     img{
         max-width: 60%;
+        max-height: 60%;
     }
+    .karty{
+        max-width: 180px;
+        max-height: 360px;
+        display: inline-block;
 
+    }
     .interakcja{
         width: 80%;
         height: 15%;

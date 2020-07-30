@@ -1,0 +1,33 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+html{
+    font-family: 'Amita', sans-serif;
+    font-size: 1rem;
+}
+
+h1{
+    font-size: 3rem;
+}
+
+h2{
+    font-size: 5rem;
+}
+
+@import "app";
+@media screen and (max-width: 850px){
+    .oknoGry{
+        max-width: 80%;
+    }
+    h1{
+        font-size: 2em;
+    }
+}
+@media screen and (max-width: 450px){
+    h1{
+        font-size: 0.7em;
+    }
+}
+

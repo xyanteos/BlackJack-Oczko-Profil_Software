@@ -18,17 +18,16 @@ h2 {
 
 .background {
   width: inherit;
-  height: 95vh;
+  min-height: 95vh;
   background: radial-gradient(#fffdfd, #363434);
   padding-top: 5vh;
+  padding-bottom: 5vh;
 }
 
 .oknoGry {
   text-align: center;
   max-width: 60%;
-  min-height: -webkit-fit-content;
-  min-height: -moz-fit-content;
-  min-height: fit-content;
+  min-height: 70vh;
   background-color: rgba(71, 68, 68, 0.37);
   margin: auto;
   padding-top: 1rem;
@@ -46,28 +45,37 @@ h2 {
 }
 
 .oknoGry .karty {
+  padding: 2vh 5vh;
   text-align: center;
 }
 
 .oknoGry .karty div {
   display: inline-block;
+  margin: auto;
+  position: relative;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 
 .oknoGry .karty div img {
-  max-width: 180px;
-  max-height: 360px;
+  max-width: 60%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
 }
 
 .oknoGry .interakcja {
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
   width: 80%;
   height: 15%;
   margin: auto;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  padding: 2rem;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
@@ -109,14 +117,24 @@ h2 {
   .oknoGry {
     max-width: 80%;
   }
+  .karty div img {
+    max-width: 80px;
+    max-height: 100px;
+  }
   h1 {
     font-size: 2em;
   }
 }
 
-@media screen and (max-width: 450px) {
+@media screen and (max-width: 480px) {
+  .oknoGry {
+    width: 100%;
+  }
   h1 {
     font-size: 0.7em;
+  }
+  img {
+    max-width: 10px;
   }
 }
 /*# sourceMappingURL=style.css.map */

@@ -8,7 +8,7 @@ const CardSelector = (props)=>{
     if(props.graRozpoczęta && props.posiadaneKarty.length>1)
     {
         //jesli gra sie rozpoczela, to wyswietl karty wylosowane przez API
-        console.log(props)
+        //console.log(props)
         const karty = props.posiadaneKarty.map((karta)=>{
             return (<div><img src={karta.image} key={karta.code}/></div>)
         })

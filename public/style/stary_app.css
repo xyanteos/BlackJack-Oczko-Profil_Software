@@ -1,34 +1,15 @@
-* {
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  font-family: 'Amita', sans-serif;
-  font-size: 1rem;
-}
-
-h1 {
-  font-size: 3rem;
-}
-
-h2 {
-  font-size: 5rem;
-}
-
 .background {
   width: inherit;
   min-height: 95vh;
   background: radial-gradient(#fffdfd, #363434);
   padding-top: 5vh;
-  height: 100%;
-  width: 100%;
+  padding-bottom: 5vh;
 }
 
 .oknoGry {
   text-align: center;
   max-width: 60%;
-  min-height: 100%;
+  min-height: 60vh;
   background-color: rgba(71, 68, 68, 0.37);
   margin: auto;
   padding-top: 1rem;
@@ -40,40 +21,38 @@ h2 {
   padding-bottom: 1rem;
 }
 
-.oknoGry img {
-  max-width: 60%;
-  max-height: 60%;
-}
-
 .oknoGry .karty {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -ms-flex-pack: distribute;
-      justify-content: space-around;
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
-  text-align: center;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  padding: 3rem;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
 }
 
-.oknoGry .karty div {
-  display: inline-block;
-  -ms-flex-preferred-size: 33%;
-      flex-basis: 33%;
-}
-
-.oknoGry .karty div img {
-  max-height: 320px;
-  max-width: 140px;
+.oknoGry .karty img {
+  max-width: 60%;
+  max-height: 50%;
 }
 
 .oknoGry .interakcja {
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
   width: 80%;
   height: 15%;
   margin: auto;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  padding: 2rem;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
@@ -110,19 +89,4 @@ h2 {
   background: #db9107;
   cursor: pointer;
 }
-
-@media screen and (max-width: 850px) {
-  .oknoGry {
-    max-width: 80%;
-  }
-  h1 {
-    font-size: 2em;
-  }
-}
-
-@media screen and (max-width: 460px) {
-  h1 {
-    font-size: 0.7em;
-  }
-}
-/*# sourceMappingURL=style.css.map */
+/*# sourceMappingURL=stary_app.css.map */

@@ -6,6 +6,8 @@
 html {
   font-family: 'Amita', sans-serif;
   font-size: 1rem;
+  height: 100%;
+  width: 100%;
 }
 
 h1 {
@@ -115,14 +117,24 @@ h2 {
   .oknoGry {
     max-width: 80%;
   }
+  .karty div img {
+    max-width: 80px;
+    max-height: 100px;
+  }
   h1 {
     font-size: 2em;
   }
 }
 
-@media screen and (max-width: 460px) {
+@media screen and (max-width: 480px) {
+  .oknoGry {
+    width: 100%;
+  }
   h1 {
     font-size: 0.7em;
   }
+  img {
+    max-width: 10px;
+  }
 }
-/*# sourceMappingURL=style.css.map */
+/*# sourceMappingURL=starystyle.css.map */

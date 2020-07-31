@@ -20,33 +20,14 @@ h2{
 @media screen and (max-width: 850px){
     .oknoGry{
         max-width: 80%;
-        // img{
-        //     max-width: 60px;
-        //     max-height: 120px;
-        // }
-    }
-    .karty{
-        div{
-            img{
-                max-width: 80px;
-                max-height: 100px;
-            }
-        }
     }
     h1{
         font-size: 2em;
     }
 }
-@media screen and (max-width: 480px){
-    .oknoGry{
-        width: 100%;
-    }
+@media screen and (max-width: 460px){
     h1{
         font-size: 0.7em;
-    }
-    img{
-
-        max-width: 10px;
     }
 }
 

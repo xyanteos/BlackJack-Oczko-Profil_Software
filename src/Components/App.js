@@ -11,7 +11,7 @@ class App extends React.Component{
         idDecka:null,
         posiadaneKarty:[],
         score: 0,
-        wygrana: false,
+        //wygrana: false,
         zliczonoPkt: false
     }
     //dodaje bardzo potrzebny system do ZLICZANIA PKT... ;)
@@ -21,6 +21,23 @@ class App extends React.Component{
              this.setState({score:<ZliczPunkty karty={this.state.posiadaneKarty}/>})
              this.setState({zliczonoPkt:true})
 
+        }
+
+        //logika gry, ktora ma dzialac w tle (czyli poczas update-ow ;P )
+        if(this.state.score>21){
+            console.log("Koniec?")
+            if(this.state.posiadaneKarty.length>2){
+                this.setState({idDecka:null})
+                this.setState({posiadaneKarty:[]})
+                this.setState({zliczonoPkt:false})
+                this.setState({graRozpoczeta:false})
+
+                console.log("Koniec KURWA!")
+            }
+            else{
+                if(this.state.posiadaneKarty)
+                console.log('lel')
+            }
         }
 
     }
@@ -39,12 +56,12 @@ class App extends React.Component{
     }
     //dodajemy opcje pobrania kolejnej karty z talii
     dowalKarte=()=>{
-        console.log("dowalam")
+        //console.log("dowalam")
         Cards.get(`${request1}${this.state.idDecka}/draw/?count=1`)
         .then((res)=>{
             this.setState({posiadaneKarty:[...this.state.posiadaneKarty, res.data.cards[0]]})
             this.setState({zliczonoPkt:false})
-            console.log(this.state.posiadaneKarty)
+            //console.log(this.state.posiadaneKarty)
         }).catch((err)=>{
             console.log(err)
         })
@@ -75,7 +92,7 @@ class App extends React.Component{
         }
 
     }
-//                    {!this.state.graRozpoczęta ? <h1>Kliknij, aby rozpocząć!</h1> : <h1>Trwa rozgrywka...</h1>}
+//{!this.state.graRozpoczęta ? <h1>Kliknij, aby rozpocząć!</h1> : <h1>Trwa rozgrywka...</h1>}
     render(){
         return(
             <div className="background">

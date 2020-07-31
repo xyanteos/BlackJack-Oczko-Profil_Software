@@ -46,9 +46,19 @@ h2 {
 }
 
 .oknoGry .karty {
+  text-align: center;
+}
+
+.oknoGry .karty div {
+  display: inline-block;
+}
+
+.oknoGry .karty div img {
   max-width: 180px;
   max-height: 360px;
-  display: inline-block;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .oknoGry .interakcja {
@@ -77,6 +87,7 @@ h2 {
 
 .oknoGry .interakcja .dawaj:hover {
   background: #db9107;
+  cursor: pointer;
 }
 
 .oknoGry .interakcja .koncz {
@@ -91,6 +102,7 @@ h2 {
 
 .oknoGry .interakcja .koncz:hover {
   background: #db9107;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 850px) {

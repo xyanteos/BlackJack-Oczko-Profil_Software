@@ -1,5 +1,5 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+
 
 
 const CardSelector = (props)=>{
@@ -10,7 +10,7 @@ const CardSelector = (props)=>{
         //jesli gra sie rozpoczela, to wyswietl karty wylosowane przez API
         //console.log(props)
         const karty = props.posiadaneKarty.map((karta)=>{
-            return (<div><img src={karta.image} key={karta.code}/></div>)
+            return (<div key={karta.code}><img src={karta.image} key={karta.code}/></div>)
         })
         return(
             <div className="karty">
@@ -21,7 +21,7 @@ const CardSelector = (props)=>{
     //jesli gra sie nie rozpoczela, to pokazuj talię
     else{
         return(
-            <div>
+            <div className="startTalia">
                 <img src="talia.png"/>
             </div>
         )

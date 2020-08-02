@@ -1,8 +1,6 @@
 import React from 'react'
-import CardSelector from './CardSelector'
-import Cards from './Api'
-import ZliczPunkty from './ZliczPunkty'
 import GameSelector from './GameSelector'
+
 
 const request1 = "https://deckofcardsapi.com/api/deck/"
 

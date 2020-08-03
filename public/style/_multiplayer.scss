@@ -10,16 +10,11 @@
 #text{
     animation: colorChanging 5s infinite;
     font-size: 2rem;
+    color:blue;
     
 }
 @keyframes colorChanging {
-    25%{
-        color:lightseagreen;
-    }
     50%{
-        color:green;
-    }
-    75%{
-        color: maroon;
+        color:red;
     }
 }

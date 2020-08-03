@@ -19,9 +19,9 @@ class App extends React.Component{
         return(
             <div className="background">
                 <div className="gameMode">
-                    <select onChange={(e)=>{this.setState({trybGry:e.target.value})}}>
-                        <option value="single">Single</option>
-                        <option value="multi">Multi</option>
+                    <select onChange={(e)=>{this.setState({trybGry:e.target.value})}} className="select-css">
+                        <option value="single">Tryb Jednoosobowy</option>
+                        <option value="multi">Tryb Wieloosobowy</option>
                     </select>
                 </div>
                 <div className="oknoGry">

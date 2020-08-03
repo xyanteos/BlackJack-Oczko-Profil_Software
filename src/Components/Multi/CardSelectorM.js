@@ -2,10 +2,10 @@ import React from 'react'
 
 
 
-const CardSelector = (props)=>{
+const CardSelectorM = (props)=>{
 
     //sprawdzam czy gra juz sie rozpoczela, czy nie
-    if(props.graRozpoczęta && props.posiadaneKarty.length>1)
+    if(props.graRozpoczeta && props.posiadaneKarty.length>1) //2gie sprawdzenie jest dodatkowym zabezpieczeniem
     {
         //jesli gra sie rozpoczela, to wyswietl karty wylosowane przez API
         //console.log(props)
@@ -29,7 +29,7 @@ const CardSelector = (props)=>{
 }
 
 
-export default CardSelector
+export default CardSelectorM
 
 
 

@@ -16,7 +16,9 @@ h2{
     font-size: 5rem;
 }
 
-@import "app";
+@import "single";
+@import "selectGame";
+@import 'multiplayer';
 @media screen and (max-width: 850px){
     .oknoGry{
         max-width: 80%;
@@ -31,3 +33,19 @@ h2{
     }
 }
 
+.startTalia{
+    img{
+        max-height: 40vh;
+    }
+}
+#wynikKrupiera {
+    animation: redFlashing 1s infinite;
+    color: blue;
+}
+  
+  @keyframes redFlashing {
+    50%{
+        color:red;
+    }
+  }
+  

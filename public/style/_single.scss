@@ -1,9 +1,21 @@
+.gameMode{
+    text-align: center;
+}
 .background{
     width: inherit;
-    min-height: 95vh;
+    min-height: 90vh;
     background: radial-gradient(rgb(255, 253, 253), #363434);
     padding-top: 5vh;
-    padding-bottom: 5vh;
+    height: 100%;
+    width: 100%;
+    padding-bottom: 5vh ;
+}
+
+
+.wyswietlacz{
+    :hover{
+        cursor: pointer;
+    }
 }
 
 .oknoGry{
@@ -18,26 +30,30 @@
         color: #dbdbdb;
         padding-bottom: 1rem;
     }
-
+    img{
+        max-width: 60%;
+        max-height: 60%;
+    }
     .karty{
         display: flex;
-        flex-wrap: wrap;
         justify-content: space-around;
-        align-content: center;
-        padding: 3rem;
-        flex:1;
-        img{
-            max-width: 60%;
-            max-height: 50%;
+        flex-wrap: wrap;
+        text-align:center;
+        div{
+            display: inline-block;
+            flex-basis: 33%;
+            img{
+                max-height: 320px;
+                max-width: 140px;
+
+            }
         }
     }
     .interakcja{
-        align-items: flex-end;
         width: 80%;
         height: 15%;
         margin: auto;
         display: flex;
-        padding: 2rem;
         justify-content: space-between;
         position: relative;
         z-index: 0;

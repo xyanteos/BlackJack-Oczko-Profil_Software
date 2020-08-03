@@ -1,7 +1,6 @@
 import React from 'react'
 import CardSelector from './CardSelector'
-import ZliczPunkty from './ZliczPunkty'
-import Cards from './Api'
+import Cards from '../Api'
 
 
 const request1 = "https://deckofcardsapi.com/api/deck/"
@@ -16,14 +15,15 @@ class Single extends React.Component{
         zliczonoPkt:false,
         wygrana: false,
         przegrana:false,
-        remis: false
+        remis: false,
+        wynikKrup:0
     }
        //dodaje bardzo potrzebny system do ZLICZANIA PKT... ;)
        policzPunkty = () =>{
            var punktacja = 0
            this.state.posiadaneKarty.map((karta)=>{
-                console.log(karta)
-                console.log(karta.value)
+                //console.log(karta)
+                //console.log(karta.value)
                 if(isNaN(karta.value)){
                     if(karta.value==="QUEEN")
                     punktacja+=3
@@ -72,28 +72,12 @@ class Single extends React.Component{
 
                 }
             }
+            //logika remisu i ogl wyniku gry gdy nie zostaly osiagniete/przekroczone progi punktowe jest zawarta w przycisku pass-owania.
+
         }
 
 
         //jesli zabraknie kart w talii to gra sie sypie.
-
-
-
-
-        //logika gry, ktora mowi kiedy koniec itd
-        // if(this.state.score>=21){
-        //     console.log("Koniec?")
-        //     if(this.state.posiadaneKarty.length>2){
-        //         this.setState({idDecka:null})
-        //         this.setState({posiadaneKarty:[]})
-        //         this.setState({zliczonoPkt:false})
-        //         this.setState({graTrwa:false})
-        //     }
-        //     else{
-        //         if(this.state.posiadaneKarty)
-        //         console.log('lel')
-        //     }
-        // }
 
     }
 
@@ -118,9 +102,10 @@ class Single extends React.Component{
     zakoncz=()=>{
 
         //dodaj wygrana i przegrana jesli numer sie zgadza
-        if(!this.state.wygrana && !this.state.przegrana)
+        if(!this.state.wygrana && !this.state.przegrana && !this.state.remis)
         {
             var wynikKrupiera = (Math.floor(Math.random()*20)+2)
+
             if(this.state.score>wynikKrupiera)
             {
                 this.setState({wygrana:true})
@@ -135,7 +120,7 @@ class Single extends React.Component{
                 console.log("Niemozliwe stalo sie mozliwe")
             }
             console.log(wynikKrupiera)
-
+            this.setState({wynikKrup:wynikKrupiera})
         }
         // - randomowy numer pomiedzy 2-21
         //this.pobierzDecka()
@@ -158,14 +143,18 @@ class Single extends React.Component{
     }
     //Zmieniam tytuł h1 w zależności od etapu gry
     coNapisac=()=>{
-        if(this.state.graTrwa && !this.state.wygrana && !this.state.przegrana){
+        if(this.state.graTrwa && !this.state.wygrana && !this.state.przegrana && !this.state.remis){
             return(<h1>Gramy!</h1>)
         }
         else if(this.state.graTrwa && this.state.przegrana){
-            return(<div><h1>Przegrałeś/aś...</h1><p>Kliknij, aby zagrać ponownie</p></div>)
+            return(<div><h1>Przegrana...</h1><p>Kliknij, aby zagrać ponownie</p></div>)
         }
         else if(this.state.graTrwa && this.state.wygrana){
-            return(<div><h1>Wygrałeś/aś!  </h1><p>Kliknij, aby zagrać ponownie</p></div>)
+            return(<div><h1>Wygrana!  </h1><p>Kliknij, aby zagrać ponownie</p></div>)
+        }
+        else if(this.state.graTrwa && this.state.remis)
+        {
+            return(<div><h1>Remis!</h1><p>Kliknij, aby zagrać ponownie</p></div>)
         }
         else{
             return(<h1>Kliknij, aby rozpocząć</h1>)
@@ -200,6 +189,7 @@ class Single extends React.Component{
         this.setState({przegrana:false})
         this.setState({zliczonoPkt:false})
         this.setState({remis:false})
+        this.setState({wynikKrup:0})
     }
     render(){
         return(
@@ -210,7 +200,8 @@ class Single extends React.Component{
                     <CardSelector graRozpoczęta={this.state.graTrwa} posiadaneKarty={this.state.posiadaneKarty} />
                 </div>
                 <div className="scoreCounter" id="wynikGracza">
-                    Twój wynik: {this.state.score}
+                    Twój wynik: {this.state.score}<br/>
+                    <span id="wynikKrupiera">{this.state.wynikKrup ===0 ? null: `Krupier:` + this.state.wynikKrup}</span>
                 </div>
                 <div className="interakcja">
                     <div className="dawaj" onClick={this.dowalKarte}>

@@ -1,6 +1,6 @@
 import React from 'react'
-import Single from './Single'
-import Multi from './Multi'
+import Single from './Single/Single'
+import Multi from './Multi/Multi'
 
 const GameSelector = (tryb) =>{
     if(tryb.tryb==="multi"){

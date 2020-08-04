@@ -30,6 +30,14 @@ class Multi extends React.Component{
                     console.log(err)
                 })
         }
+        // if(this.state.dodanoGraczy===true){
+        //     for(var i=0;i<this.state.gracze.length;i++){
+        //         var punkty = this.policzPunkty(this.state.gracze[i].posiadaneKarty)
+        //         this.state.gracze.setState({punkty:punkty})
+        //         this.state.gracze.setState({zliczonoPunkty:true})
+        //     }
+
+        // }
         
     }
 
@@ -40,8 +48,9 @@ class Multi extends React.Component{
             Cards.get(`${request}${this.state.idDecka}/draw/?count=2`)
             .then((res2)=>{
                 //onsole.log(res2);
+                var val = this.policzPunkty(res2.data.cards)
                 this.setState({gracze:[...this.state.gracze,{
-                    punkty:0,
+                    punkty:val,
                     posiadaneKarty:res2.data.cards,
                     zliczonoPunkty:false,
                     zakonczylGre:false
@@ -117,10 +126,33 @@ class Multi extends React.Component{
     }
     kliknieto = () =>{
     //po dodaniu graczy czas zaczac gre
-    if(this.state.dodanoGraczy && !this.state.graRozpoczeta){
-        this.setState({graRozpoczeta:true})
+        if(this.state.dodanoGraczy && !this.state.graRozpoczeta){
+            this.setState({graRozpoczeta:true})
+        }
     }
-    }
+
+    policzPunkty = (kartyLista) =>{
+        var punktacja = 0
+        kartyLista.map((karta)=>{
+             //console.log(karta)
+             //console.log(karta.value)
+             if(isNaN(karta.value)){
+                 if(karta.value==="QUEEN")
+                 punktacja+=3
+                 if(karta.value==="KING")
+                 punktacja+=4
+                 if(karta.value==="JACK")
+                 punktacja+=2
+                 if(karta.value==="ACE")
+                 punktacja+=11
+             }
+             else{
+                 punktacja+=parseInt(karta.value)
+             }
+         })
+     return(punktacja)
+     }
+
 
 
     render(){
@@ -131,7 +163,7 @@ class Multi extends React.Component{
                     <div onClick={(e)=>{this.kliknieto()}}>
                         {this.state.dodanoGraczy ? <CardSelectorM graRozpoczeta={this.state.graRozpoczeta} aktualnyGracz={this.state.aktualnyGracz} listaGraczy={this.state.gracze} iloscGraczy={this.state.iloscGraczy}/> : null}
                     </div>
-                    Wynik gracza: {this.state.graRozpoczeta? this.state.gracze[this.state.aktualnyGracz].punkty : 0}
+                    Wynik gracza: {this.state.graRozpoczeta && this.state.gracze? this.state.gracze[this.state.aktualnyGracz].punkty : 0}
                     {this.state.graRozpoczeta? (
                     <div className="interakcja">
                         <div className="dawaj" onClick={this.dowalKarte}>
@@ -142,8 +174,7 @@ class Multi extends React.Component{
                         </div>
                     </div>
                     ):
-                    null
-                    }
+                    null}
                 </div>
             </div>
         )
@@ -154,6 +185,15 @@ class Multi extends React.Component{
 
 }
 
+//TODO:
+/*
+    1.dodac funkcjonalnosc przyciskow
+    2.dodac logike w przypadku wylosowania oczka badz 21 pkt, 
+    3.dodac logike w przypadku przekroczenia punktacji
+    4.dodac mechanike "zakonczenia" w przypadku 0<wynikGracza<21
+    5. Oglaszanie zwyciezcy 
 
+
+*/
 
 export default Multi

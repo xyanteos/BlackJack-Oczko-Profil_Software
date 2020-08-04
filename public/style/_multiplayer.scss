@@ -8,11 +8,20 @@
     padding-left: 2vw;
 }
 #text{
-    animation: colorChanging 5s infinite;
+    animation: colorChanging 1s infinite;
     font-size: 2rem;
     color:blue;
     
 }
+
+.wyswietlaczMulti{
+    &:hover{
+        cursor: pointer;
+    }
+}
+
+
+
 @keyframes colorChanging {
     50%{
         color:red;

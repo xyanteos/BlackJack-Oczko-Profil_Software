@@ -216,10 +216,14 @@ h2 {
 }
 
 #text {
-  -webkit-animation: colorChanging 5s infinite;
-          animation: colorChanging 5s infinite;
+  -webkit-animation: colorChanging 1s infinite;
+          animation: colorChanging 1s infinite;
   font-size: 2rem;
   color: blue;
+}
+
+.wyswietlaczMulti:hover {
+  cursor: pointer;
 }
 
 @-webkit-keyframes colorChanging {

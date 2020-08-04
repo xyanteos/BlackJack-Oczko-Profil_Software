@@ -2,7 +2,7 @@ import React from 'react'
 import GameSelector from './GameSelector'
 
 
-const request1 = "https://deckofcardsapi.com/api/deck/"
+
 
 class App extends React.Component{
     state = {

@@ -1,50 +1,76 @@
 import React from 'react'
-import CardSelectorMulti from './CardSelectorM'
+import CartSelectorM from './CardSelectorM'
 import Cards from '../Api'
+import CardSelectorM from './CardSelectorM'
+
 const request = "https://deckofcardsapi.com/api/deck/"
-class Multi extends React.Component {
-    state = {
+class Multi extends React.Component{
+    state={
         graRozpoczeta: false,
+        wybieranieGraczy:true,
         iloscGraczy: 0,
         idDecka: null,
         aktualnyGracz: 0,
         konczymy: false,
-        gracze: []
+        gracze: [],
+        dodanoGraczy:false
     }
-    //zliczenie pkt
-    policzPunkty = () => {
-        var punktacja = 0
-        this.state.posiadaneKarty.map((karta) => {
-            //console.log(karta)
-            //console.log(karta.value)
-            if (isNaN(karta.value)) {
-                if (karta.value === "QUEEN")
-                    punktacja += 3
-                if (karta.value === "KING")
-                    punktacja += 4
-                if (karta.value === "JACK")
-                    punktacja += 2
-                if (karta.value === "ACE")
-                    punktacja += 11
-            }
-            else {
-                punktacja += parseInt(karta.value)
-            }
-        })
-        return (punktacja)
+
+    componentDidUpdate(){
+        if(this.state.iloscGraczy!==0 && this.state.wybieranieGraczy)
+        {
+            this.setState({wybieranieGraczy:false})
+        }
+        if(this.state.idDecka===null){
+            if(this.state.iloscGraczy<=3){ 
+                Cards.get(`${request}new/shuffle/?deck_count=1`).then((res)=>{
+                    this.setState({idDecka:res.data.deck_id})
+                    //console.log(`ID_decka : ${res.data.deck_id}`)
+                }).catch((err)=>{
+                    console.log(err)
+                })
+        }
+        
     }
+
+    //PONIZEJ JEST FORMAT DANYCH KAZDEGO Z GARCZY
+    if(this.state.iloscGraczy!==0 && this.state.gracze.length===0 && this.state.idDecka!==null && !this.state.dodanoGraczy){
+        var wykonaniePetli=0
+        for(var i=0;i<this.state.iloscGraczy;i++){
+            Cards.get(`${request}${this.state.idDecka}/draw/?count=2`)
+            .then((res2)=>{
+                //onsole.log(res2);
+                this.setState({gracze:[...this.state.gracze,{
+                    punkty:0,
+                    posiadaneKarty:res2.data.cards,
+                    zliczonoPunkty:false,
+                    zakonczylGre:false
+                }]})
+            })
+            .catch((err)=>{
+                console.log(err)
+            });
+            wykonaniePetli+=1;
+        }
+        this.setState({dodanoGraczy:true})
+        //console.log(`petla wykonala sie ${wykonaniePetli} razy`)
+    }
+    if(this.state.gracze.length!==0){
+            //console.log(this.state.gracze)
+    }
+
+}
+
+
     coNapisac = () => {
-        if (!this.state.graRozpoczeta) {
+        if (!this.state.graRozpoczeta && this.state.wybieranieGraczy) {
             //gra nie jest jeszcze rozpoczeta
             return (
                 <div>
                     <h1>
                         Tryb wieloosobowy. Zaznacz ilość graczy:
                         <select className="select-css wewnatrz" onChange={(e) => {
-                            this.setState({ iloscGraczy: e.target.value })
-                            this.pobierzTalie(e.target.value)
-                            this.stworzGraczy(e.target.value)
-                            this.setState({ graRozpoczeta: true })
+                            this.setState({iloscGraczy: e.target.value})
                             //na razie bedzie opcja wyboru 2-3 graczy, ale moze dodam jeszcze "niestandardowa"
                         }}>
                             <option value={null} selected disabled hidden>wybierz</option>
@@ -56,107 +82,78 @@ class Multi extends React.Component {
                 </div>
             )
         }
-        else {
-
+        if(!this.state.wybieranieGraczy && !this.state.graRozpoczeta) {
+            //console.log(this.state.graRozpoczeta)
             //gra sie rozpoczela
             return (
-                <div className="playerCounter">
-                    <div className="tryb">
-                        <img src="user-symbol.png" alt="Aktualny Gracz" />
-                        <span>{this.state.iloscGraczy}</span>
+                <div className="ekranGry">
+                    <div className="playerCounter">
+                        <div className="tryb">
+                            <img src="user-symbol.png" alt="User Symbol" />
+                            <span>{this.state.iloscGraczy}</span>
+                        </div>
+                        <div className="aktualny">
+                            <span id="text">
+                                {this.state.graRozpoczeta? this.state.aktualnyGracz + 1 : null}
+                            </span>
+                        </div>
                     </div>
-                    <div className="aktualny">
-                        <span id="text">
-                            {this.state.aktualnyGracz + 1}
-                        </span>
-                    </div>
+                    <h1> Kliknij, aby rozpocząć </h1>
                 </div>
+
             )
 
         }
-
-
-    }
-    //talie trzeba stworzyc przed wywolaniem graczy, zeby mozna bylo z niej dobierac karty dla kazdego gracza.
-    //przekaze ilosc graczy do tworzenia talii, zeby w przyszlosci moc stworzyc talie z wiekszej ilosci kart w ramach potrzeb (3<iloscGraczy) - pozwoli to pozbyc sie problemu\/
-    //braku kart w talii do pobrania podczas gry
-    pobierzTalie = (iluGraczy) =>{
-        if(iluGraczy<=3){
-            Cards.get(`${request}new/shuffle/?deck_count=1`).then((res)=>{
-                //console.log(res)
-                this.setState({idDecka:res.data.deck_id})
-                //console.log(this.state.idDecka)
-            })
-            .catch((err)=>{
-                console.log(err)
-            })
-
-
-        }
-        else{
-            var iloscTalii = Math.floor(iluGraczy/3)
-            Cards.get(`${request}new/shuffle/?deck_count=${iloscTalii}`).then((res)=>{
-                //console.log(res)
-                this.setState({idDecka:res.data.deck_id})
-                //console.log(this.state.idDecka)
-            })
-            .catch((err)=>{
-                console.log(err)
-            })
-        }
-    }
-    stworzGraczy = (ilu) =>{
-        var kartyStartowe = []
-        for (var i=0;i<ilu;i++){
-            Cards.get(`${request}${this.state.idDecka}/draw/?count=2`)
-            .then((res)=>{
-                //console.log(res2);
-                kartyStartowe=res
-            })
-            .catch((err)=>{
-                console.log(err)
-            });
-            this.setState({
-                gracze:[...this.state.gracze, {
-                    posiadaneKarty:kartyStartowe,
-                    punkty:0,
-                    zliczonoPunkty:false,
-                    zakonczyl:false,
-                }]
-            })
-        }
-    }
-    kliknietoKarty = () =>{
-        if(this.state.graRozpoczeta && this.state.konczymy){
-            this.restart()
-        }
-        if(!this.state.graRozpoczeta && this.state.iloscGraczy!=0){
-            this.setState({graRozpoczeta:true})
-        }
-    }
-
-    restart = () =>{
-        this.setState({konczymy:false})
-        this.setState({graRozpoczeta:false})
-        this.setState({iloscGraczy:0})
-        this.setState({idDecka:null})
-        this.setState({aktualnyGracz:0})
-        this.setState({gracze:[]})
-    }
-
-
-    render() {
-        return (
-            <div className="multiPlayer">
-                {this.coNapisac()}
-                <div className="wyswietlacz" onClick={this.kliknietoKarty()}>
-                    <CardSelectorMulti graRozpoczeta={this.state.graRozpoczeta} gracze={this.state.gracze} aktualnyGracz={this.state.aktualnyGracz} konczymy={this.state.konczymy}/>
+        if(this.state.graRozpoczeta){
+            return(
+                <div className="aktualny">
+                    <span id="text">
+                        <img src="user-symbol.png" alt="aktualnyGracz"></img>
+                        {this.state.graRozpoczeta? this.state.aktualnyGracz + 1 : null}
+                    </span>
                 </div>
-                
+            )
+        }
+    }
+    kliknieto = () =>{
+    //po dodaniu graczy czas zaczac gre
+    if(this.state.dodanoGraczy && !this.state.graRozpoczeta){
+        this.setState({graRozpoczeta:true})
+    }
+    }
+
+
+    render(){
+        return(
+            <div className='multiPlayer'>
+                <div className="wyswietlaczMulti">
+                    {this.coNapisac()}
+                    <div onClick={(e)=>{this.kliknieto()}}>
+                        {this.state.dodanoGraczy ? <CardSelectorM graRozpoczeta={this.state.graRozpoczeta} aktualnyGracz={this.state.aktualnyGracz} listaGraczy={this.state.gracze} iloscGraczy={this.state.iloscGraczy}/> : null}
+                    </div>
+                    Wynik gracza: {this.state.graRozpoczeta? this.state.gracze[this.state.aktualnyGracz].punkty : 0}
+                    {this.state.graRozpoczeta? (
+                    <div className="interakcja">
+                        <div className="dawaj" onClick={this.dowalKarte}>
+                            Dawaj!
+                        </div>
+                        <div className="koncz" onClick={this.zakoncz}>
+                            Pass!
+                        </div>
+                    </div>
+                    ):
+                    null
+                    }
+                </div>
             </div>
         )
     }
+
+
+
+
 }
+
 
 
 export default Multi

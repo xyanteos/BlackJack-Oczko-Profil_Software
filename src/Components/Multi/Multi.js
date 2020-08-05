@@ -17,6 +17,12 @@ class Multi extends React.Component{
     }
 
     componentDidUpdate(){
+        if(this.state.konczymy){
+            
+        }
+
+
+
         if(this.state.iloscGraczy!==0 && this.state.wybieranieGraczy)
         {
             this.setState({wybieranieGraczy:false})
@@ -47,7 +53,8 @@ class Multi extends React.Component{
         for(var i=0;i<this.state.iloscGraczy;i++){
             Cards.get(`${request}${this.state.idDecka}/draw/?count=2`)
             .then((res2)=>{
-                //onsole.log(res2);
+                //console.log(res2);
+                //musze policzyc punkty zanim rozpoczne rozgrywke zeby moc stwierdzic kto wygral od razu po rozdaniu
                 var val = this.policzPunkty(res2.data.cards)
                 this.setState({gracze:[...this.state.gracze,{
                     punkty:val,
@@ -64,9 +71,9 @@ class Multi extends React.Component{
         this.setState({dodanoGraczy:true})
         //console.log(`petla wykonala sie ${wykonaniePetli} razy`)
     }
-    if(this.state.gracze.length!==0){
-            //console.log(this.state.gracze)
-    }
+    // if(this.state.gracze.length!==0){
+    //         console.log(this.state.gracze)
+    // }
 
 }
 
@@ -91,6 +98,9 @@ class Multi extends React.Component{
                 </div>
             )
         }
+        //trzeba policzyc wyniki i powiedziec kiedy konczymy, nastepnie wytypowac zwyciezce
+
+
         if(!this.state.wybieranieGraczy && !this.state.graRozpoczeta) {
             //console.log(this.state.graRozpoczeta)
             //gra sie rozpoczela
@@ -103,7 +113,7 @@ class Multi extends React.Component{
                         </div>
                         <div className="aktualny">
                             <span id="text">
-                                {this.state.graRozpoczeta? this.state.aktualnyGracz + 1 : null}
+                                {this.state.graRozpoczeta? this.state.aktualnyGracz + 1 : null} 
                             </span>
                         </div>
                     </div>
@@ -120,6 +130,7 @@ class Multi extends React.Component{
                         <img src="user-symbol.png" alt="aktualnyGracz"></img>
                         {this.state.graRozpoczeta? this.state.aktualnyGracz + 1 : null}
                     </span>
+                    /<span>{this.state.iloscGraczy? this.state.iloscGraczy : null}</span>
                 </div>
             )
         }
@@ -153,7 +164,54 @@ class Multi extends React.Component{
      return(punktacja)
      }
 
+     dowalKarte = () =>{
+        Cards.get(`${request}${this.state.idDecka}/draw/?count=1`)
+        .then((res1)=>{
+            console.log(res1);
+            var val = this.policzPunkty(res1.data.cards)
+            //okazuje sie ze zeby zmienic "nested"(zagniezdzony) state, trzeba uzyc tymczasowej zmiennej... (._ .)
+            var listaGraczy = [...this.state.gracze]
+            listaGraczy[this.state.aktualnyGracz].punkty+=val;
+            listaGraczy[this.state.aktualnyGracz].zliczonoPunkty=true;
+            listaGraczy[this.state.aktualnyGracz].posiadaneKarty=[...listaGraczy[this.state.aktualnyGracz].posiadaneKarty,res1.data.cards[0]]
 
+            //console.log([...listaGraczy[this.state.aktualnyGracz].posiadaneKarty,res1.data.cards[0]]) => działa
+            //console.log(listaGraczy[this.state.aktualnyGracz].punkty+val) -> działa
+            this.setState({gracze:listaGraczy})
+
+
+
+
+        })
+        .catch((err)=>{
+            console.log(err)
+        });
+     }
+     zakoncz = () =>{
+         var gracz = this.state.gracze[this.state.aktualnyGracz]
+         gracz.zakonczylGre = true
+         var zakonczylo =0
+         for (var i=0; i<this.state.iloscGraczy;i++){
+            if(this.state.gracze[i].zakonczylGre){
+                zakonczylo++
+            }
+            if(parseInt(zakonczylo)===parseInt(this.state.iloscGraczy) && this.state.konczymy===false){
+                this.setState({konczymy:true})
+            }
+        }
+         if(this.state.aktualnyGracz===this.state.iloscGraczy-1){
+             //jesli wszyscy juz zakonczyli to koniec gry
+
+
+            //  console.log('zakonczylo : '+zakonczylo)
+            //  console.log('ilosc graczy:' +this.state.iloscGraczy)
+            //  console.log(this.state.konczymy)
+             this.setState({aktualnyGracz:0})
+         }
+         else{
+             this.setState({aktualnyGracz: this.state.aktualnyGracz+1})
+         }
+     }
 
     render(){
         return(

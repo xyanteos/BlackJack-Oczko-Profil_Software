@@ -13,14 +13,46 @@ class Multi extends React.Component{
         aktualnyGracz: 0,
         konczymy: false,
         gracze: [],
-        dodanoGraczy:false
+        dodanoGraczy:false,
+        wykonanoRuch:false,
+        zwyciezcy:[] 
     }
 
     componentDidUpdate(){
+
+        //oczko i 10szka z asem
+        if(this.state.graRozpoczeta && this.state.dodanoGraczy){
+            if(this.state.gracze[this.state.aktualnyGracz].punkty>=21 && this.state.gracze[this.state.aktualnyGracz].posiadaneKarty.length===2){
+                this.setState({wykonanoRuch:true})
+            }
+        }
+        // podliczanie pkt i deklarowanie zwyciezcy
         if(this.state.konczymy){
+            console.log('gra sie zakonczyla')
+            // this.state.gracze.forEach(gracz =>{
+            //     //console.log(gracz)
+            //     if(parseInt(gracz.punkty)===21)
+            //     this.setState({zwyciezcy:[...zwyciezcy,gracz]})
+            // })
+            
+
+            console.log("indexy zwyciezkich graczy : "+this.state.zwyciezcy)
+        }
+        //po zakonczonym ruchu zmien gracza
+        if(this.state.wykonanoRuch){
+            
+            if(this.state.aktualnyGracz===this.state.iloscGraczy-1)
+            {
+                
+                this.setState({aktualnyGracz:0})
+                this.setState({wykonanoRuch:false})
+            }
+            else{
+                this.setState({aktualnyGracz: this.state.aktualnyGracz+1})  
+                this.setState({wykonanoRuch:false})
+            }
             
         }
-
 
 
         if(this.state.iloscGraczy!==0 && this.state.wybieranieGraczy)
@@ -167,14 +199,14 @@ class Multi extends React.Component{
      dowalKarte = () =>{
         Cards.get(`${request}${this.state.idDecka}/draw/?count=1`)
         .then((res1)=>{
-            console.log(res1);
+            //console.log(res1);
             var val = this.policzPunkty(res1.data.cards)
             //okazuje sie ze zeby zmienic "nested"(zagniezdzony) state, trzeba uzyc tymczasowej zmiennej... (._ .)
             var listaGraczy = [...this.state.gracze]
             listaGraczy[this.state.aktualnyGracz].punkty+=val;
-            listaGraczy[this.state.aktualnyGracz].zliczonoPunkty=true;
+            
             listaGraczy[this.state.aktualnyGracz].posiadaneKarty=[...listaGraczy[this.state.aktualnyGracz].posiadaneKarty,res1.data.cards[0]]
-
+            listaGraczy[this.state.aktualnyGracz].zliczonoPunkty=true;
             //console.log([...listaGraczy[this.state.aktualnyGracz].posiadaneKarty,res1.data.cards[0]]) => działa
             //console.log(listaGraczy[this.state.aktualnyGracz].punkty+val) -> działa
             this.setState({gracze:listaGraczy})
@@ -186,10 +218,29 @@ class Multi extends React.Component{
         .catch((err)=>{
             console.log(err)
         });
+        //przydalo by sie zeby gracze po jednym ruchu oddali kolejke...
+//      ponizsze musi byc zrealizowane w update, inaczej jakies dziwadla sie dzieja z dopisywaniem kart do gracza
+        if(this.state.listaGraczy && this.state.listaGraczy[this.state.aktualnyGracz].zliczonoPunkty){
+            var listaGraczy = this.state.gracze
+            listaGraczy[this.state.aktualnyGracz].zliczonoPunkty = false
+            this.setState({gracze:listaGraczy})
+            
+            this.setState({wykonanoRuch:true})
+        }
+
+
+        // if(this.state.aktualnyGracz===this.state.iloscGraczy-1)
+        // this.setState({aktualnyGracz:0})
+        // else
+        // this.setState({aktualnyGracz:this.state.aktualnyGracz+1})
+
+
+
      }
      zakoncz = () =>{
          var gracz = this.state.gracze[this.state.aktualnyGracz]
          gracz.zakonczylGre = true
+         
          var zakonczylo =0
          for (var i=0; i<this.state.iloscGraczy;i++){
             if(this.state.gracze[i].zakonczylGre){
@@ -199,18 +250,19 @@ class Multi extends React.Component{
                 this.setState({konczymy:true})
             }
         }
-         if(this.state.aktualnyGracz===this.state.iloscGraczy-1){
-             //jesli wszyscy juz zakonczyli to koniec gry
+        this.setState({wykonanoRuch:true})
+        //  if(this.state.aktualnyGracz===this.state.iloscGraczy-1){
+        //      //jesli wszyscy juz zakonczyli to koniec gry
 
 
-            //  console.log('zakonczylo : '+zakonczylo)
-            //  console.log('ilosc graczy:' +this.state.iloscGraczy)
-            //  console.log(this.state.konczymy)
-             this.setState({aktualnyGracz:0})
-         }
-         else{
-             this.setState({aktualnyGracz: this.state.aktualnyGracz+1})
-         }
+        //     //  console.log('zakonczylo : '+zakonczylo)
+        //     //  console.log('ilosc graczy:' +this.state.iloscGraczy)
+        //     //  console.log(this.state.konczymy)
+        //      this.setState({aktualnyGracz:0})
+        //  }
+        //  else{
+        //      this.setState({aktualnyGracz: this.state.aktualnyGracz+1})
+        //  }
      }
 
     render(){
@@ -219,7 +271,7 @@ class Multi extends React.Component{
                 <div className="wyswietlaczMulti">
                     {this.coNapisac()}
                     <div onClick={(e)=>{this.kliknieto()}}>
-                        {this.state.dodanoGraczy ? <CardSelectorM graRozpoczeta={this.state.graRozpoczeta} aktualnyGracz={this.state.aktualnyGracz} listaGraczy={this.state.gracze} iloscGraczy={this.state.iloscGraczy}/> : null}
+                        {this.state.dodanoGraczy ? <CardSelectorM graRozpoczeta={this.state.graRozpoczeta} zakonczono={this.state.konczymy} aktualnyGracz={this.state.aktualnyGracz} listaGraczy={this.state.gracze} iloscGraczy={this.state.iloscGraczy}/> : null}
                     </div>
                     Wynik gracza: {this.state.graRozpoczeta && this.state.gracze? this.state.gracze[this.state.aktualnyGracz].punkty : 0}
                     {this.state.graRozpoczeta? (

@@ -8,7 +8,7 @@ const CardSelectorM = (props)=>{
     if(props.graRozpoczeta===true) //2gie sprawdzenie jest dodatkowym zabezpieczeniem
     {
 
-        console.log(props)
+        //console.log(props)
         const karty = props.listaGraczy[props.aktualnyGracz].posiadaneKarty.map((karta)=>{
             return (<div key={karta.code}><img src={karta.image} key={karta.code}/></div>)
         })

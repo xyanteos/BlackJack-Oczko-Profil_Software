@@ -3,6 +3,14 @@ import CartSelectorM from './CardSelectorM'
 import Cards from '../Api'
 import CardSelectorM from './CardSelectorM'
 
+
+            // this.state.gracze.forEach(gracz =>{
+            //     //console.log(gracz)
+            //     if(parseInt(gracz.punkty)===21)
+            //     this.setState({zwyciezcy:[...zwyciezcy,gracz]})
+            // })
+
+
 const request = "https://deckofcardsapi.com/api/deck/"
 class Multi extends React.Component{
     state={
@@ -18,25 +26,79 @@ class Multi extends React.Component{
         zwyciezcy:[] 
     }
 
-    componentDidUpdate(){
 
-        //oczko i 10szka z asem
-        if(this.state.graRozpoczeta && this.state.dodanoGraczy){
-            if(this.state.gracze[this.state.aktualnyGracz].punkty>=21 && this.state.gracze[this.state.aktualnyGracz].posiadaneKarty.length===2){
-                this.setState({wykonanoRuch:true})
+    zwyciezcaDodanyDoListy = () =>{
+        //moglbym z tego zrobic ogolna metode z 2ma inputami i outputem true/false, ale robie tylko na potrzeby tego przypadku...
+        var tak=false;
+        var listaZwyciezcow = [...this.state.zwyciezcy]
+        var listaGraczy = [...this.state.gracze]
+        for(var i=0;i<listaZwyciezcow.length;i++){
+            for(var k=0;k<listaGraczy.length;k++){
+                if(listaGraczy[k]===listaZwyciezcow[i]){
+                    tak=true
+                }
             }
         }
+        return(tak)
+    }
+
+
+    componentDidUpdate(){
+
+
+        // //oczko i 10szka z asem
+        // if(this.state.graRozpoczeta && this.state.dodanoGraczy){
+        //     if(this.state.gracze[this.state.aktualnyGracz].punkty>=21 && this.state.gracze[this.state.aktualnyGracz].posiadaneKarty.length===2){
+        //         this.setState({wykonanoRuch:true})
+        //     }
+        // }
         // podliczanie pkt i deklarowanie zwyciezcy
         if(this.state.konczymy){
             console.log('gra sie zakonczyla')
-            // this.state.gracze.forEach(gracz =>{
-            //     //console.log(gracz)
-            //     if(parseInt(gracz.punkty)===21)
-            //     this.setState({zwyciezcy:[...zwyciezcy,gracz]})
-            // })
-            
 
-            console.log("indexy zwyciezkich graczy : "+this.state.zwyciezcy)
+            //jesli jeszcze nie ma zwyciezcow
+            var sprawdzonoZwyciezcow=false
+            if( !sprawdzonoZwyciezcow){
+                var osiagnietoMax=false
+                for (var i=0;i<this.state.iloscGraczy;i++){
+                    //musze sie upewnic ze nie ma jeszcze dodanego tego zwyciezcy
+                    if(this.state.gracze[i].punkty===21 && !this.zwyciezcaDodanyDoListy()){
+                        this.setState({zwyciezcy:[...this.state.zwyciezcy,this.state.gracze[i]]})
+                        if(!osiagnietoMax){
+                            osiagnietoMax=true
+                        }
+                    }
+                    if(this.state.gracze[i].punkty===22 && this.state.gracze[i].posiadaneKarty.length===2 && !this.zwyciezcaDodanyDoListy()){
+                        //oczko, gracz ma 2 asy
+                        this.setState({zwyciezcy:[...this.state.zwyciezcy, this.state.gracze[i]]})
+                        osiagnietoMax=true
+                    }
+    
+                }
+                if(!osiagnietoMax){
+                    var maxymalnaWartoscPkt=0
+                    for(var j=0;j<this.state.iloscGraczy;j++){
+                        if(this.state.gracze[j].punkty<maxymalnaWartoscPkt)
+                        maxymalnaWartoscPkt=this.state.gracze[j].punkty
+                        //console.log(this.state.gracze[j].punkty)
+                    }
+                    for(var i=0;i<this.state.iloscGraczy;i++){
+                        if(this.state.gracze[i].punkty===maxymalnaWartoscPkt && !this.zwyciezcaDodanyDoListy()){
+                            this.setState({zwyciezcy:[...this.state.zwyciezcy,this.state.gracze[i]]})
+                        }
+                    }
+                }
+                sprawdzonoZwyciezcow=true
+            }
+            if(this.state.zwyciezcy.length===0 && this.state.sprawdzonoZwyciezcow){
+                //brak zwyciezcow, wszyscy przegrali
+                console.log('brak zwyciezcow, wszyscy przegrali...')
+            }
+
+            
+            console.log('zwyciezcy:')
+            console.log(this.state.zwyciezcy)
+            // console.log("indexy zwyciezkich graczy : "+this.state.zwyciezcy)
         }
         //po zakonczonym ruchu zmien gracza
         if(this.state.wykonanoRuch){
@@ -212,12 +274,15 @@ class Multi extends React.Component{
             this.setState({gracze:listaGraczy})
 
 
-
+            if(this.state.gracze[this.state.aktualnyGracz].punkty>=21){
+                this.setState({wykonanoRuch:true})
+            }
 
         })
         .catch((err)=>{
             console.log(err)
         });
+
         //przydalo by sie zeby gracze po jednym ruchu oddali kolejke...
 //      ponizsze musi byc zrealizowane w update, inaczej jakies dziwadla sie dzieja z dopisywaniem kart do gracza
         if(this.state.listaGraczy && this.state.listaGraczy[this.state.aktualnyGracz].zliczonoPunkty){
@@ -227,7 +292,7 @@ class Multi extends React.Component{
             
             this.setState({wykonanoRuch:true})
         }
-
+        
 
         // if(this.state.aktualnyGracz===this.state.iloscGraczy-1)
         // this.setState({aktualnyGracz:0})

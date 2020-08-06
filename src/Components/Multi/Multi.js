@@ -23,9 +23,22 @@ class Multi extends React.Component{
         gracze: [],
         dodanoGraczy:false,
         wykonanoRuch:false,
-        zwyciezcy:[] 
+        zwyciezcy:[] ,
+        pokazanoZwyciezcow: false
     }
-
+    zresetujGre = () =>{
+        this.setState({graRozpoczeta:false})
+        this.setState({wybieranieGraczy:true})
+        this.setState({iloscGraczy:0})
+        this.setState({idDecka:null})
+        this.setState({aktualnyGracz:0})
+        this.setState({konczymy:true})
+        this.setState({gracze:[]})
+        this.setState({dodanoGraczy:false})
+        this.setState({wykonanoRuch:false})
+        this.setState({zwyciezcy:[]})
+        this.setState({pokazanoZwyciezcow:false})
+    }
 
     zwyciezcaDodanyDoListy = () =>{
         //moglbym z tego zrobic ogolna metode z 2ma inputami i outputem true/false, ale robie tylko na potrzeby tego przypadku...
@@ -58,7 +71,7 @@ class Multi extends React.Component{
 
             //jesli jeszcze nie ma zwyciezcow
             var sprawdzonoZwyciezcow=false
-            if( !sprawdzonoZwyciezcow){
+            if( !sprawdzonoZwyciezcow && this.state.dodanoGraczy && this.state.pokazanoZwyciezcow){
                 var osiagnietoMax=false
                 for (var i=0;i<this.state.iloscGraczy;i++){
                     //musze sie upewnic ze nie ma jeszcze dodanego tego zwyciezcy
@@ -68,7 +81,8 @@ class Multi extends React.Component{
                             osiagnietoMax=true
                         }
                     }
-                    if(this.state.gracze[i].punkty===22 && this.state.gracze[i].posiadaneKarty.length===2 && !this.zwyciezcaDodanyDoListy()){
+                    
+                    if(this.state.gracze[i].punkty===22 && this.state.gracze[i].posiadaneKarty.length-1===2 && !this.zwyciezcaDodanyDoListy()){
                         //oczko, gracz ma 2 asy
                         this.setState({zwyciezcy:[...this.state.zwyciezcy, this.state.gracze[i]]})
                         osiagnietoMax=true
@@ -78,10 +92,11 @@ class Multi extends React.Component{
                 if(!osiagnietoMax){
                     var maxymalnaWartoscPkt=0
                     for(var j=0;j<this.state.iloscGraczy;j++){
-                        if(this.state.gracze[j].punkty<maxymalnaWartoscPkt)
+                        if(this.state.gracze[j].punkty>maxymalnaWartoscPkt)
                         maxymalnaWartoscPkt=this.state.gracze[j].punkty
                         //console.log(this.state.gracze[j].punkty)
                     }
+                    console.log(maxymalnaWartoscPkt)
                     for(var i=0;i<this.state.iloscGraczy;i++){
                         if(this.state.gracze[i].punkty===maxymalnaWartoscPkt && !this.zwyciezcaDodanyDoListy()){
                             this.setState({zwyciezcy:[...this.state.zwyciezcy,this.state.gracze[i]]})
@@ -89,6 +104,7 @@ class Multi extends React.Component{
                     }
                 }
                 sprawdzonoZwyciezcow=true
+                
             }
             if(this.state.zwyciezcy.length===0 && this.state.sprawdzonoZwyciezcow){
                 //brak zwyciezcow, wszyscy przegrali
@@ -130,14 +146,7 @@ class Multi extends React.Component{
                     console.log(err)
                 })
         }
-        // if(this.state.dodanoGraczy===true){
-        //     for(var i=0;i<this.state.gracze.length;i++){
-        //         var punkty = this.policzPunkty(this.state.gracze[i].posiadaneKarty)
-        //         this.state.gracze.setState({punkty:punkty})
-        //         this.state.gracze.setState({zliczonoPunkty:true})
-        //     }
-
-        // }
+        //tutaj bedzie moglo sie znalezc zapytanie jak bedzie wiecej graczy niz 3.
         
     }
 
@@ -151,6 +160,7 @@ class Multi extends React.Component{
                 //musze policzyc punkty zanim rozpoczne rozgrywke zeby moc stwierdzic kto wygral od razu po rozdaniu
                 var val = this.policzPunkty(res2.data.cards)
                 this.setState({gracze:[...this.state.gracze,{
+                    id:i,
                     punkty:val,
                     posiadaneKarty:res2.data.cards,
                     zliczonoPunkty:false,
@@ -234,6 +244,9 @@ class Multi extends React.Component{
         if(this.state.dodanoGraczy && !this.state.graRozpoczeta){
             this.setState({graRozpoczeta:true})
         }
+        if(this.state.konczymy && this.state.pokazanoZwyciezcow){
+            this.zresetujGre()
+        }
     }
 
     policzPunkty = (kartyLista) =>{
@@ -273,8 +286,23 @@ class Multi extends React.Component{
             //console.log(listaGraczy[this.state.aktualnyGracz].punkty+val) -> działa
             this.setState({gracze:listaGraczy})
 
-
+            //ciezkie ale działa \/
             if(this.state.gracze[this.state.aktualnyGracz].punkty>=21){
+                var gracz = this.state.gracze[this.state.aktualnyGracz]
+                gracz.zakonczylGre = true
+
+                var zakonczylo =0
+                for (var i=0; i<this.state.iloscGraczy;i++){
+                   if(this.state.gracze[i].zakonczylGre){
+                       zakonczylo++
+                   }
+                   if(parseInt(zakonczylo)===parseInt(this.state.iloscGraczy) && this.state.konczymy===false){
+                       this.setState({konczymy:true})
+                   }
+               }
+
+
+
                 this.setState({wykonanoRuch:true})
             }
 
@@ -285,13 +313,13 @@ class Multi extends React.Component{
 
         //przydalo by sie zeby gracze po jednym ruchu oddali kolejke...
 //      ponizsze musi byc zrealizowane w update, inaczej jakies dziwadla sie dzieja z dopisywaniem kart do gracza
-        if(this.state.listaGraczy && this.state.listaGraczy[this.state.aktualnyGracz].zliczonoPunkty){
-            var listaGraczy = this.state.gracze
-            listaGraczy[this.state.aktualnyGracz].zliczonoPunkty = false
-            this.setState({gracze:listaGraczy})
+        // if(this.state.listaGraczy && this.state.listaGraczy[this.state.aktualnyGracz].zliczonoPunkty){
+        //     var listaGraczy = this.state.gracze
+        //     listaGraczy[this.state.aktualnyGracz].zliczonoPunkty = false
+        //     this.setState({gracze:listaGraczy})
             
-            this.setState({wykonanoRuch:true})
-        }
+        //     this.setState({wykonanoRuch:true})
+        // }
         
 
         // if(this.state.aktualnyGracz===this.state.iloscGraczy-1)
@@ -305,6 +333,9 @@ class Multi extends React.Component{
      zakoncz = () =>{
          var gracz = this.state.gracze[this.state.aktualnyGracz]
          gracz.zakonczylGre = true
+
+
+
          
          var zakonczylo =0
          for (var i=0; i<this.state.iloscGraczy;i++){
@@ -330,13 +361,16 @@ class Multi extends React.Component{
         //  }
      }
 
+     sprawdzCzyWyswietlonoZwyciezcow = ()=>{
+         this.setState({pokazanoZwyciezcow:true})
+     }
     render(){
         return(
             <div className='multiPlayer'>
                 <div className="wyswietlaczMulti">
                     {this.coNapisac()}
                     <div onClick={(e)=>{this.kliknieto()}}>
-                        {this.state.dodanoGraczy ? <CardSelectorM graRozpoczeta={this.state.graRozpoczeta} zakonczono={this.state.konczymy} aktualnyGracz={this.state.aktualnyGracz} listaGraczy={this.state.gracze} iloscGraczy={this.state.iloscGraczy}/> : null}
+                        {this.state.dodanoGraczy ? <CardSelectorM graRozpoczeta={this.state.graRozpoczeta} zakonczono={this.state.konczymy} zwyciezcy={this.state.zwyciezcy} pokazanoZwyciezcow={this.state.pokazanoZwyciezcow} zwyciezcyPokazani={this.sprawdzCzyWyswietlonoZwyciezcow} aktualnyGracz={this.state.aktualnyGracz} listaGraczy={this.state.gracze}/> : null}
                     </div>
                     Wynik gracza: {this.state.graRozpoczeta && this.state.gracze? this.state.gracze[this.state.aktualnyGracz].punkty : 0}
                     {this.state.graRozpoczeta? (

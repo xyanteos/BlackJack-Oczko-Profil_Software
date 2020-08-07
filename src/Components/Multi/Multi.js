@@ -57,6 +57,7 @@ class Multi extends React.Component{
 
 
     componentDidUpdate(){
+//upewniam sie
 
 
         // //oczko i 10szka z asem

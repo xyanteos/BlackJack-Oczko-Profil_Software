@@ -15,9 +15,11 @@ król – 4 pkt.
 As – 11 pkt.
 
 Zadanie zostało wykonane w technologii React z użyciem: 
+- ***create-react-app***
+- JavaScript
 - node.js 
 - express.js
-- React DOM
+- ReactDOM
 - Axios
 - SCSS
 - [Deck of Cards API](https://deckofcardsapi.com/)

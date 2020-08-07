@@ -21,6 +21,8 @@ Zadanie zostało wykonane w technologii React z użyciem:
 - SCSS
 - [Deck of Cards API](https://deckofcardsapi.com/)
 
+***
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

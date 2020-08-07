@@ -1,5 +1,6 @@
 # Black Jack (oczko)
 Strona ta została stworzona przeze mnie jako zadanie rekrutacyjne.
+
 Zadanie to zakładało stworzenie gry karcianej na zasadzie Black Jack-a z pewną dodakową funkcjonalnością.
 
 > Oczko – prosta gra karciana, polegająca na dobieraniu kolejnych kart dotąd, aby osiągnąć wartość liczbową posiadanych kart jak najbliższą (ale nie większą niż) 21.

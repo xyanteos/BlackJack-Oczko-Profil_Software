@@ -131,6 +131,19 @@ class Multi extends React.Component{
                 })
         }
         //tutaj bedzie moglo sie znalezc zapytanie jak bedzie wiecej graczy niz 3.
+        //Dodatkowo trzeba dodać taką opcję podczas wyboru ilości graczy oraz
+        //zmienić sposób nadawania klucza (key) kartom w liście podczas ich renderowania w CardSelectorM.
+        //przykład zapytania : \/
+            // if(this.state.iloscGraczy>3){
+            //     var wielkoscDecka = Math.floor(this.state.iloscGraczy/3)
+            //     Cards.get(`${request}new/shuffle/?deck_count=${wielkoscDecka}`).then((res)=>{
+            //         this.setState({idDecka:res.data.deck_id})
+            //         //console.log(`ID_decka : ${res.data.deck_id}`)
+            //     }).catch((err)=>{
+            //         console.log(err)
+            //     })
+            // }
+
         
     }
 
@@ -177,6 +190,9 @@ class Multi extends React.Component{
                             <option value={null} selected disabled hidden>wybierz</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
+                            
+                            {/* <option value="wpisz_wartość">wpisz_wartość</option> */}
+
                         </select>
                     </h1>
 

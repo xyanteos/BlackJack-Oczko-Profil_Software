@@ -25,10 +25,9 @@ Zadanie zostało wykonane w technologii React z użyciem:
 - [Deck of Cards API](https://deckofcardsapi.com/)
 
 ```
-Aktualna wersja strony ma pewien problem w grze multiplayer.
-Błędnie resetuje stan podczas próby rozegrania gry po raz n-ty.
-
-
+Gra zaprojektowana jest w sposób umożliwiający rozbudowanie rozgrywki 
+na większą ilość graczy po dopisaniu logiki pobierania decka oraz
+dodaniu takiej opcji podczas wyboru ilości graczy.
 ```
 
 ***

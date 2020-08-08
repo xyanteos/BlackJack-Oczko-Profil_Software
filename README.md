@@ -26,7 +26,7 @@ Zadanie zostało wykonane w technologii React z użyciem:
 
 ```
 Aktualna wersja strony ma pewne problemy w grze multiplayer.
-Błędnie liczy punkty (zalicza punktację powyżej 21), oraz 
+Błędnie liczy punkty (czasami zalicza punktację powyżej 21 jak gracz ma 3 karty), oraz 
 nieudolnie resetuje stan podczas próby rozegrania gry po raz n-ty.
 ```
 

@@ -1,8 +1,46 @@
+# Black Jack (oczko)
+Strona ta została stworzona przeze mnie jako zadanie rekrutacyjne.
+
+Zadanie to zakładało stworzenie gry karcianej na zasadzie Black Jack-a z pewną dodakową funkcjonalnością.
+
+> Oczko – prosta gra karciana, polegająca na dobieraniu kolejnych kart dotąd, aby osiągnąć wartość liczbową posiadanych kart jak najbliższą (ale nie większą niż) 21.
+Gracz otrzymuje kolejne karty z talii dotąd, aż sam zdecyduje, że nie chce już więcej kart, lub otrzyma wynik 21 lub większy.
+Suma większa lub równa 22 oznacza przegraną. Wyjątkiem od tej reguły jest perskie oczko (dwa asy). Perskie oczko zawsze oznacza wygraną.
+Jeśli żaden z graczy nie otrzyma wyniku 21 wygrywa ten który był najbliżej tej wartości. W oczko gra się talią od 2 do asa.
+Punktacja:
+Karty 2 do 10 mają wartość równą wartości karty
+walet – 2 pkt.
+dama – 3 pkt.
+król – 4 pkt.
+As – 11 pkt.
+
+Zadanie zostało wykonane w technologii React z użyciem: 
+- ***create-react-app***
+- JavaScript
+- node.js 
+- express.js
+- ReactDOM
+- Axios
+- SCSS
+- [Deck of Cards API](https://deckofcardsapi.com/)
+
+```
+Aktualna wersja strony ma pewne problemy w grze multiplayer.
+Błędnie liczy punkty (zalicza punktację powyżej 21), oraz 
+nieudolnie resetuje stan podczas próby rozegrania gry po raz n-ty.
+```
+
+***
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
-In the project directory, you can run:
+In the project directory, with the use of a terminal, you can run:
+
+### `npm install`
+Installs the required repositories
+
 
 ### `npm start`
 
@@ -27,42 +65,16 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
 
-### Analyzing the Bundle Size
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+License
+----
 
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+**Freeware**

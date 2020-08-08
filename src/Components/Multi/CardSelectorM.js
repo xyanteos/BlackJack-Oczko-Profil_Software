@@ -32,7 +32,7 @@ const CardSelectorM = (props)=>{
                 if(!props.pokazanoZwyciezcow)
                 props.zwyciezcyPokazani()
                 const winners = props.zwyciezcy.map((winner)=>{
-                return(<li key={winner.id}><h2>Gracz o id {winner.id} z licbą punktów {winner.punkty}</h2></li>)
+                return(<li key={winner.id}><h2>Gracz {winner.id} z licbą punktów {winner.punkty}</h2></li>)
                 })
             return(<div>Zwyciezcami są: <ol id="listaZwyciezcow">{winners}</ol></div>)
             }

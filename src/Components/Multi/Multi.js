@@ -74,7 +74,7 @@ class Multi extends React.Component{
                         }
                     }
                     
-                    if(this.state.gracze[i].punkty===22 && this.state.gracze[i].posiadaneKarty.length-1===2 && !this.zwyciezcaDodanyDoListy()){
+                    if(this.state.gracze[i].punkty===22 && this.state.gracze[i].posiadaneKarty.length===2 && !this.zwyciezcaDodanyDoListy()){
                         //oczko, gracz ma 2 asy
                         this.setState({zwyciezcy:[...this.state.zwyciezcy, this.state.gracze[i]]})
                         osiagnietoMax=true
@@ -88,7 +88,7 @@ class Multi extends React.Component{
                         maxymalnaWartoscPkt=this.state.gracze[j].punkty
                         //console.log(this.state.gracze[j].punkty)
                     }
-                    console.log(maxymalnaWartoscPkt)
+                    //console.log(maxymalnaWartoscPkt)
                     for(var i=0;i<this.state.iloscGraczy;i++){
                         if(this.state.gracze[i].punkty===maxymalnaWartoscPkt && !this.zwyciezcaDodanyDoListy()){
                             this.setState({zwyciezcy:[...this.state.zwyciezcy,this.state.gracze[i]]})
@@ -104,8 +104,8 @@ class Multi extends React.Component{
             }
 
             
-            console.log('zwyciezcy:')
-            console.log(this.state.zwyciezcy)
+            // console.log('zwyciezcy:')
+            // console.log(this.state.zwyciezcy)
             // console.log("indexy zwyciezkich graczy : "+this.state.zwyciezcy)
         }
         //po zakonczonym ruchu zmien gracza
@@ -235,7 +235,7 @@ class Multi extends React.Component{
         }
         if(this.state.konczymy && this.state.pokazanoZwyciezcow){
             this.zresetujGre()
-            console.log(this.state)
+            //console.log(this.state)
         }
     }
 
@@ -338,7 +338,7 @@ class Multi extends React.Component{
                     {this.state.graRozpoczeta? (
                     <div className="interakcja">
                         <div className="dawaj" onClick={this.dowalKarte}>
-                            Dawaj!
+                            Dobierz!
                         </div>
                         <div className="koncz" onClick={this.zakoncz}>
                             Pass!

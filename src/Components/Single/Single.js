@@ -119,7 +119,7 @@ class Single extends React.Component{
                 this.setState({remis:true})
                 console.log("Niemozliwe stalo sie mozliwe")
             }
-            console.log(wynikKrupiera)
+            // console.log(wynikKrupiera)
             this.setState({wynikKrup:wynikKrupiera})
         }
         // - randomowy numer pomiedzy 2-21
@@ -205,7 +205,7 @@ class Single extends React.Component{
                 </div>
                 <div className="interakcja">
                     <div className="dawaj" onClick={this.dowalKarte}>
-                        Dawaj!
+                        Dobierz!
                     </div>
                     <div className="koncz" onClick={this.zakoncz}>
                         Pass!

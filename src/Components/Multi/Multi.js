@@ -38,6 +38,7 @@ class Multi extends React.Component{
         this.setState({wykonanoRuch:false})
         this.setState({zwyciezcy:[]})
         this.setState({pokazanoZwyciezcow:false})
+        // z jakiegos powodu nie wszystkie rzeczy się resetują ze stanu...
     }
 
     zwyciezcaDodanyDoListy = () =>{
@@ -57,16 +58,6 @@ class Multi extends React.Component{
 
 
     componentDidUpdate(){
-//upewniam sie
-
-
-        // //oczko i 10szka z asem
-        // if(this.state.graRozpoczeta && this.state.dodanoGraczy){
-        //     if(this.state.gracze[this.state.aktualnyGracz].punkty>=21 && this.state.gracze[this.state.aktualnyGracz].posiadaneKarty.length===2){
-        //         this.setState({wykonanoRuch:true})
-        //     }
-        // }
-        // podliczanie pkt i deklarowanie zwyciezcy
         if(this.state.konczymy){
             console.log('gra sie zakonczyla')
 
@@ -93,7 +84,7 @@ class Multi extends React.Component{
                 if(!osiagnietoMax){
                     var maxymalnaWartoscPkt=0
                     for(var j=0;j<this.state.iloscGraczy;j++){
-                        if(this.state.gracze[j].punkty>maxymalnaWartoscPkt)
+                        if(this.state.gracze[j].punkty>maxymalnaWartoscPkt && this.state.gracze[j].punkty<21)
                         maxymalnaWartoscPkt=this.state.gracze[j].punkty
                         //console.log(this.state.gracze[j].punkty)
                     }
@@ -176,9 +167,6 @@ class Multi extends React.Component{
         this.setState({dodanoGraczy:true})
         //console.log(`petla wykonala sie ${wykonaniePetli} razy`)
     }
-    // if(this.state.gracze.length!==0){
-    //         console.log(this.state.gracze)
-    // }
 
 }
 
@@ -247,6 +235,7 @@ class Multi extends React.Component{
         }
         if(this.state.konczymy && this.state.pokazanoZwyciezcow){
             this.zresetujGre()
+            console.log(this.state)
         }
     }
 
@@ -287,7 +276,7 @@ class Multi extends React.Component{
             //console.log(listaGraczy[this.state.aktualnyGracz].punkty+val) -> działa
             this.setState({gracze:listaGraczy})
 
-            //ciezkie ale działa \/
+            //ciezkie, ale działa \/
             if(this.state.gracze[this.state.aktualnyGracz].punkty>=21){
                 var gracz = this.state.gracze[this.state.aktualnyGracz]
                 gracz.zakonczylGre = true
@@ -312,22 +301,6 @@ class Multi extends React.Component{
             console.log(err)
         });
 
-        //przydalo by sie zeby gracze po jednym ruchu oddali kolejke...
-//      ponizsze musi byc zrealizowane w update, inaczej jakies dziwadla sie dzieja z dopisywaniem kart do gracza
-        // if(this.state.listaGraczy && this.state.listaGraczy[this.state.aktualnyGracz].zliczonoPunkty){
-        //     var listaGraczy = this.state.gracze
-        //     listaGraczy[this.state.aktualnyGracz].zliczonoPunkty = false
-        //     this.setState({gracze:listaGraczy})
-            
-        //     this.setState({wykonanoRuch:true})
-        // }
-        
-
-        // if(this.state.aktualnyGracz===this.state.iloscGraczy-1)
-        // this.setState({aktualnyGracz:0})
-        // else
-        // this.setState({aktualnyGracz:this.state.aktualnyGracz+1})
-
 
 
      }
@@ -348,18 +321,6 @@ class Multi extends React.Component{
             }
         }
         this.setState({wykonanoRuch:true})
-        //  if(this.state.aktualnyGracz===this.state.iloscGraczy-1){
-        //      //jesli wszyscy juz zakonczyli to koniec gry
-
-
-        //     //  console.log('zakonczylo : '+zakonczylo)
-        //     //  console.log('ilosc graczy:' +this.state.iloscGraczy)
-        //     //  console.log(this.state.konczymy)
-        //      this.setState({aktualnyGracz:0})
-        //  }
-        //  else{
-        //      this.setState({aktualnyGracz: this.state.aktualnyGracz+1})
-        //  }
      }
 
      sprawdzCzyWyswietlonoZwyciezcow = ()=>{
@@ -395,15 +356,5 @@ class Multi extends React.Component{
 
 }
 
-//TODO:
-/*
-    1.dodac funkcjonalnosc przyciskow
-    2.dodac logike w przypadku wylosowania oczka badz 21 pkt, 
-    3.dodac logike w przypadku przekroczenia punktacji
-    4.dodac mechanike "zakonczenia" w przypadku 0<wynikGracza<21
-    5. Oglaszanie zwyciezcy 
-
-
-*/
 
 export default Multi

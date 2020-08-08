@@ -12,7 +12,7 @@ const GameSelector = (tryb) =>{
     else{
         console.log("cos poszlo nie tak")
         console.log(tryb)
-        return(<div>nicosc</div>)
+        return(<div>nicość</div>)
     }
 
         

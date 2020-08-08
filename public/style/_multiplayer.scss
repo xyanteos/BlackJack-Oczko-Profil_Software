@@ -20,7 +20,10 @@
     }
 }
 
-
+#listaZwyciezcow{
+    list-style:  inside;
+    list-style-type: upper-roman;
+}
 
 @keyframes colorChanging {
     50%{

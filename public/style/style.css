@@ -13,7 +13,7 @@ h1 {
 }
 
 h2 {
-  font-size: 5rem;
+  font-size: 2rem;
 }
 
 .gameMode {
@@ -224,6 +224,11 @@ h2 {
 
 .wyswietlaczMulti:hover {
   cursor: pointer;
+}
+
+#listaZwyciezcow {
+  list-style: inside;
+  list-style-type: upper-roman;
 }
 
 @-webkit-keyframes colorChanging {

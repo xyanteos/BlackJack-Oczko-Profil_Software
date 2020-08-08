@@ -26,19 +26,11 @@ class Multi extends React.Component{
         zwyciezcy:[] ,
         pokazanoZwyciezcow: false
     }
+    componentDidMount(){
+        this.baseState = this.state
+    }
     zresetujGre = () =>{
-        this.setState({graRozpoczeta:false})
-        this.setState({wybieranieGraczy:true})
-        this.setState({iloscGraczy:0})
-        this.setState({idDecka:null})
-        this.setState({aktualnyGracz:0})
-        this.setState({konczymy:true})
-        this.setState({gracze:[]})
-        this.setState({dodanoGraczy:false})
-        this.setState({wykonanoRuch:false})
-        this.setState({zwyciezcy:[]})
-        this.setState({pokazanoZwyciezcow:false})
-        // z jakiegos powodu nie wszystkie rzeczy się resetują ze stanu...
+        this.setState(this.baseState)
     }
 
     zwyciezcaDodanyDoListy = () =>{

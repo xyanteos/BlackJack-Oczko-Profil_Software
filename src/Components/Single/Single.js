@@ -95,6 +95,7 @@ class Single extends React.Component{
     //od razu po zaladowaniu strony wysylam zapytanie o decka (lub decki(?))
     componentDidMount(){
         this.pobierzDecka()
+        this.baseState = this.state
     }
 
 
@@ -181,15 +182,8 @@ class Single extends React.Component{
         }
     }
     restart = () =>{
-        this.setState({graTrwa:false})
+        this.setState(this.baseState)
         this.pobierzDecka()
-        this.setState({score:0})
-        this.setState({posiadaneKarty:[]})
-        this.setState({wygrana:false})
-        this.setState({przegrana:false})
-        this.setState({zliczonoPkt:false})
-        this.setState({remis:false})
-        this.setState({wynikKrup:0})
     }
     render(){
         return(

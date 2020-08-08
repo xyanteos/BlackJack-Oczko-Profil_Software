@@ -25,9 +25,10 @@ Zadanie zostało wykonane w technologii React z użyciem:
 - [Deck of Cards API](https://deckofcardsapi.com/)
 
 ```
-Aktualna wersja strony ma pewne problemy w grze multiplayer.
-Błędnie liczy punkty (czasami zalicza punktację powyżej 21 jak gracz ma 3 karty), oraz 
-nieudolnie resetuje stan podczas próby rozegrania gry po raz n-ty.
+Aktualna wersja strony ma pewien problem w grze multiplayer.
+Błędnie resetuje stan podczas próby rozegrania gry po raz n-ty.
+
+
 ```
 
 ***

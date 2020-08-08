@@ -24,6 +24,12 @@ Zadanie zostało wykonane w technologii React z użyciem:
 - SCSS
 - [Deck of Cards API](https://deckofcardsapi.com/)
 
+```
+Aktualna wersja strony ma pewne problemy w grze multiplayer.
+Błędnie liczy punkty (zalicza punktację powyżej 21), oraz 
+nieudolnie resetuje stan podczas próby rozegrania gry po raz n-ty.
+```
+
 ***
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

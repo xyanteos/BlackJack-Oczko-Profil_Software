@@ -27,7 +27,9 @@ Zadanie zostało wykonane w technologii React z użyciem:
 ```
 Gra zaprojektowana jest w sposób umożliwiający rozbudowanie rozgrywki 
 na większą ilość graczy po dopisaniu logiki pobierania decka oraz
-dodaniu takiej opcji podczas wyboru ilości graczy.
+dodaniu takiej opcji podczas wyboru ilości graczy. Dodatkowo należy pamiętać
+o konieczności nadania odpowiednich różnorodnych kluczy podczas mapowania
+każdej z kart w elemencie CardSelectorM.
 ```
 
 ***

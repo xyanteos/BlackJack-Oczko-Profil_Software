@@ -8,22 +8,19 @@ const request1 = "https://deckofcardsapi.com/api/deck/"
 
 class Single extends React.Component{
     state={
-        graTrwa:false,
-        idDecka:null,
-        posiadaneKarty:[],
+        gameStarted:false,
+        deckID:null,
+        ownedCards:[],
         score:0,
-        zliczonoPkt:false,
-        wygrana: false,
-        przegrana:false,
-        remis: false,
-        wynikKrup:0
+        pointsCounted:false,
+        won: false,
+        lost:false,
+        draw: false,
+        croupierPoints:0
     }
-       //dodaje bardzo potrzebny system do ZLICZANIA PKT... ;)
-       policzPunkty = () =>{
+       countPoints = () =>{
            var punktacja = 0
-           this.state.posiadaneKarty.map((karta)=>{
-                //console.log(karta)
-                //console.log(karta.value)
+           this.state.ownedCards.map((karta)=>{
                 if(isNaN(karta.value)){
                     if(karta.value==="QUEEN")
                     punktacja+=3
@@ -43,49 +40,44 @@ class Single extends React.Component{
 
         //logika
        componentDidUpdate(){
-        if(this.state.posiadaneKarty.length>1 && !this.state.zliczonoPkt)
+        if(this.state.ownedCards.length>1 && !this.state.pointsCounted)
         {
-            this.setState({score:this.policzPunkty()})
-            this.setState({zliczonoPkt:true})
+            this.setState({score:this.countPoints()})
+            this.setState({pointsCounted:true})
 
         }
 
-        if(this.state.graTrwa){
-            if(this.state.score===21 && this.state.wygrana===false){
+        if(this.state.gameStarted){
+            if(this.state.score===21 && this.state.won===false){
                 console.log('Wygrałeś/aś!')
-                this.setState({wygrana:true})
+                this.setState({won:true})
 
             }
             if(this.state.score>21){
-                if(this.state.posiadaneKarty.length>2){
-                    if(this.state.przegrana===false){
-                        this.setState({przegrana:true})
+                if(this.state.ownedCards.length>2){
+                    if(this.state.lost===false){
+                        this.setState({lost:true})
                         console.log('przegrałeś/aś...')
                     }
 
                 }
                 else{
-                    if(!this.state.wygrana){
-                        this.setState({wygrana:true})
+                    if(!this.state.won){
+                        this.setState({won:true})
                         console.log('Wygrałeś/aś!')
                     }
 
                 }
             }
-            //logika remisu i ogl wyniku gry gdy nie zostaly osiagniete/przekroczone progi punktowe jest zawarta w przycisku pass-owania.
+
 
         }
 
-
-        //jesli zabraknie kart w talii to gra sie sypie.
-
     }
 
-    pobierzDecka = () =>{
+    getA_NewDeck = () =>{
         Cards.get(`${request1}new/shuffle/?deck_count=1`).then((res)=>{
-            //console.log(res)
-            this.setState({idDecka:res.data.deck_id})
-            //console.log(this.state.idDecka)
+            this.setState({deckID:res.data.deck_id})
         })
         .catch((err)=>{
             console.log(err)
@@ -94,66 +86,59 @@ class Single extends React.Component{
 
     //od razu po zaladowaniu strony wysylam zapytanie o decka (lub decki(?))
     componentDidMount(){
-        this.pobierzDecka()
+        this.getA_NewDeck()
         this.baseState = this.state
     }
 
 
     //konczenie w trakcie
-    zakoncz=()=>{
+    endTheGame=()=>{
 
-        //dodaj wygrana i przegrana jesli numer sie zgadza
-        if(!this.state.wygrana && !this.state.przegrana && !this.state.remis)
+        if(!this.state.won && !this.state.lost && !this.state.draw)
         {
-            var wynikKrupiera = (Math.floor(Math.random()*20)+2)
+            var CroupierPointsRandom = (Math.floor(Math.random()*20)+2)
 
-            if(this.state.score>wynikKrupiera)
+            if(this.state.score>CroupierPointsRandom)
             {
-                this.setState({wygrana:true})
-                console.log('Wynik Krupiera:'+wynikKrupiera)
+                this.setState({won:true})
+                console.log('Wynik Krupiera:'+CroupierPointsRandom)
             }
-            else if(this.state.score<wynikKrupiera){
-                this.setState({przegrana:true})
-                console.log('Wynik Krupiera:'+wynikKrupiera)
+            else if(this.state.score<CroupierPointsRandom){
+                this.setState({lost:true})
+                console.log('Wynik Krupiera:'+CroupierPointsRandom)
             }
             else{
-                this.setState({remis:true})
+                this.setState({draw:true})
                 console.log("Niemozliwe stalo sie mozliwe")
             }
-            // console.log(wynikKrupiera)
-            this.setState({wynikKrup:wynikKrupiera})
+            this.setState({croupierPoints:CroupierPointsRandom})
         }
-        // - randomowy numer pomiedzy 2-21
-        //this.pobierzDecka()
-        // this.setState({graTrwa:false})
-        // this.setState({score:0})
-        // this.setState({posiadaneKarty:[]})
+
     }
     //dodajemy opcje pobrania kolejnej karty z talii
-    dowalKarte=()=>{
-        //console.log("dowalam")
-        if(this.state.graTrwa && !this.state.przegrana && !this.state.wygrana)
-        Cards.get(`${request1}${this.state.idDecka}/draw/?count=1`)
+    draw_a_card=()=>{
+
+        if(this.state.gameStarted && !this.state.lost && !this.state.won)
+        Cards.get(`${request1}${this.state.deckID}/draw/?count=1`)
         .then((res)=>{
-            this.setState({posiadaneKarty:[...this.state.posiadaneKarty, res.data.cards[0]]})
-            this.setState({zliczonoPkt:false})
-            //console.log(this.state.posiadaneKarty)
+            this.setState({ownedCards:[...this.state.ownedCards, res.data.cards[0]]})
+            this.setState({pointsCounted:false})
         }).catch((err)=>{
             console.log(err)
         })
     }
     //Zmieniam tytuł h1 w zależności od etapu gry
-    coNapisac=()=>{
-        if(this.state.graTrwa && !this.state.wygrana && !this.state.przegrana && !this.state.remis){
+    whatToAnnounce=()=>{
+        if(this.state.gameStarted && !this.state.won && !this.state.lost && !this.state.draw){
             return(<h1>Gramy!</h1>)
         }
-        else if(this.state.graTrwa && this.state.przegrana){
+        else if(this.state.gameStarted && this.state.lost){
             return(<div><h1>Przegrana...</h1><p>Kliknij, aby zagrać ponownie</p></div>)
         }
-        else if(this.state.graTrwa && this.state.wygrana){
+        else if(this.state.gameStarted && this.state.won){
             return(<div><h1>Wygrana!  </h1><p>Kliknij, aby zagrać ponownie</p></div>)
         }
-        else if(this.state.graTrwa && this.state.remis)
+        else if(this.state.gameStarted && this.state.draw)
         {
             return(<div><h1>Remis!</h1><p>Kliknij, aby zagrać ponownie</p></div>)
         }
@@ -162,46 +147,44 @@ class Single extends React.Component{
         }
     }
     //czynności wykonywane podczas rozpoczęcia gry
-    kliknietoKarty=()=>{
-        //console.log(this.state.graTrwa)
+    cardsClicked=()=>{
         
-        if(!this.state.graTrwa){
-            this.setState({graTrwa:true});
-            Cards.get(`${request1}${this.state.idDecka}/draw/?count=2`)
+        if(!this.state.gameStarted){
+            this.setState({gameStarted:true});
+            Cards.get(`${request1}${this.state.deckID}/draw/?count=2`)
             .then((res2)=>{
-                //onsole.log(res2);
-                this.setState({posiadaneKarty:res2.data.cards})
+                this.setState({ownedCards:res2.data.cards})
             })
             .catch((err)=>{
                 console.log(err)
             });
         }
-        if(this.state.graTrwa && (this.state.wygrana || this.state.przegrana || this.state.remis)){
+        if(this.state.gameStarted && (this.state.won || this.state.lost || this.state.draw)){
             this.restart()
 
         }
     }
     restart = () =>{
         this.setState(this.baseState)
-        this.pobierzDecka()
+        this.getA_NewDeck()
     }
     render(){
         return(
             <div className="singlePlayer">
                 <div>Grasz w singla</div>
-                <div onClick={this.kliknietoKarty} className="wyswietlacz">
-                    {this.coNapisac()}
-                    <CardSelector graRozpoczęta={this.state.graTrwa} posiadaneKarty={this.state.posiadaneKarty} />
+                <div onClick={this.cardsClicked} className="wyswietlacz">
+                    {this.whatToAnnounce()}
+                    <CardSelector gameStarted={this.state.gameStarted} ownedCards={this.state.ownedCards} />
                 </div>
                 <div className="scoreCounter" id="wynikGracza">
                     Twój wynik: {this.state.score}<br/>
-                    <span id="wynikKrupiera">{this.state.wynikKrup ===0 ? null: `Krupier:` + this.state.wynikKrup}</span>
+                    <span id="CroupierPointsRandom">{this.state.croupierPoints ===0 ? null: `Krupier:` + this.state.croupierPoints}</span>
                 </div>
                 <div className="interakcja">
-                    <div className="dawaj" onClick={this.dowalKarte}>
+                    <div className="dawaj" onClick={this.draw_a_card}>
                         Dobierz!
                     </div>
-                    <div className="koncz" onClick={this.zakoncz}>
+                    <div className="koncz" onClick={this.endTheGame}>
                         Pass!
                     </div>
                 </div>

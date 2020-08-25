@@ -54,7 +54,7 @@ h2 {
   max-height: 60%;
 }
 
-.oknoGry .karty {
+.oknoGry .cards {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -65,13 +65,13 @@ h2 {
   text-align: center;
 }
 
-.oknoGry .karty div {
+.oknoGry .cards div {
   display: inline-block;
   -ms-flex-preferred-size: 33%;
       flex-basis: 33%;
 }
 
-.oknoGry .karty div img {
+.oknoGry .cards div img {
   max-height: 320px;
   max-width: 140px;
 }
@@ -262,7 +262,7 @@ h2 {
   max-height: 40vh;
 }
 
-#wynikKrupiera {
+#CroupierPointsRandom {
   -webkit-animation: redFlashing 1s infinite;
           animation: redFlashing 1s infinite;
   color: blue;

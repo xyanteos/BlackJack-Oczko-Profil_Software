@@ -4,17 +4,14 @@ import React from 'react'
 
 const CardSelector = (props)=>{
 
-    //sprawdzam czy gra juz sie rozpoczela, czy nie
-    if(props.graRozpoczęta && props.posiadaneKarty.length>1) //2gie sprawdzenie jest dodatkowym zabezpieczeniem
+    if(props.gameStarted && props.ownedCards.length>1) 
     {
-        //jesli gra sie rozpoczela, to wyswietl karty wylosowane przez API
-        //console.log(props)
-        const karty = props.posiadaneKarty.map((karta)=>{
-            return (<div key={karta.code}><img src={karta.image} key={karta.code}/></div>)
+        const cards = props.ownedCards.map((card)=>{
+            return (<div key={card.code}><img src={card.image} key={card.code} alt={card.name}/></div>)
         })
         return(
-            <div className="karty">
-                {karty}
+            <div className="cards">
+                {cards}
             </div>
         )
     }

@@ -1,5 +1,4 @@
 import React from 'react'
-import CartSelectorM from './CardSelectorM'
 import Cards from '../Api'
 import CardSelectorM from './CardSelectorM'
 
@@ -29,10 +28,10 @@ class Multi extends React.Component{
         //moglbym z tego zrobic ogolna metode z 2ma inputami i outputem true/false, ale robie tylko na potrzeby tego przypadku...
         var tak=false;
         var listaZwyciezcow = [...this.state.winners]
-        var listaGraczy = [...this.state.players]
+        var playersList = [...this.state.players]
         for(var i=0;i<listaZwyciezcow.length;i++){
-            for(var k=0;k<listaGraczy.length;k++){
-                if(listaGraczy[k]===listaZwyciezcow[i]){
+            for(var k=0;k<playersList.length;k++){
+                if(playersList[k]===listaZwyciezcow[i]){
                     tak=true
                 }
             }
@@ -139,7 +138,7 @@ class Multi extends React.Component{
         for(var i=0;i<this.state.playersCount;i++){
             Cards.get(`${request}${this.state.deckID}/draw/?count=2`)
             .then((res2)=>{
-                //musze policzyc points zanim rozpoczne rozgrywke zeby moc stwierdzic kto wygral od razu po rozdaniu
+                //musze policzyc pkt zanim rozpoczne rozgrywke zeby moc stwierdzic kto wygral od razu po rozdaniu
                 var val = this.policzpoints(res2.data.cards)
                 this.setState({players:[...this.state.players,{
                     id:i,
@@ -186,7 +185,6 @@ class Multi extends React.Component{
 
 
         if(!this.state.choosingPlayers && !this.state.gameStarted) {
-            //console.log(this.state.gameStarted)
             //gra sie rozpoczela
             return (
                 <div className="ekranGry">
@@ -254,12 +252,12 @@ class Multi extends React.Component{
         .then((res1)=>{
             var val = this.policzpoints(res1.data.cards)
             //okazuje sie ze zeby zmienic "nested"(zagniezdzony) state, trzeba uzyc tymczasowej zmiennej.
-            var listaGraczy = [...this.state.players]
-            listaGraczy[this.state.currentPlayer].points+=val;
+            var playersList = [...this.state.players]
+            playersList[this.state.currentPlayer].points+=val;
             
-            listaGraczy[this.state.currentPlayer].posiadaneKarty=[...listaGraczy[this.state.currentPlayer].posiadaneKarty,res1.data.cards[0]]
-            listaGraczy[this.state.currentPlayer].zliczonopoints=true;
-            this.setState({players:listaGraczy})
+            playersList[this.state.currentPlayer].posiadaneKarty=[...playersList[this.state.currentPlayer].posiadaneKarty,res1.data.cards[0]]
+            playersList[this.state.currentPlayer].zliczonopoints=true;
+            this.setState({players:playersList})
 
             //ciezkie pod wzgl. obliczen, ale działa \/
             if(this.state.players[this.state.currentPlayer].points>=21){
@@ -317,7 +315,7 @@ class Multi extends React.Component{
                 <div className="wyswietlaczMulti">
                     {this.coNapisac()}
                     <div onClick={(e)=>{this.kliknieto()}}>
-                        {this.state.playersAdded ? <CardSelectorM gameStarted={this.state.gameStarted} zakonczono={this.state.ending} winners={this.state.winners} winnersShown={this.state.winnersShown} checkIfWinnersShown={this.checkIfWinnersShown} currentPlayer={this.state.currentPlayer} listaGraczy={this.state.players}/> : null}
+                        {this.state.playersAdded ? <CardSelectorM gameStarted={this.state.gameStarted} ended={this.state.ending} winners={this.state.winners} winnersShown={this.state.winnersShown} checkIfWinnersShown={this.checkIfWinnersShown} currentPlayer={this.state.currentPlayer} playersList={this.state.players}/> : null}
                     </div>
                     Wynik gracza: {this.state.gameStarted && this.state.players? this.state.players[this.state.currentPlayer].points : 0}
                     {this.state.gameStarted? (

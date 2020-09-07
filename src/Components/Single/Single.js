@@ -20,19 +20,19 @@ class Single extends React.Component{
     }
        countPoints = () =>{
            var punktacja = 0
-           this.state.ownedCards.map((karta)=>{
-                if(isNaN(karta.value)){
-                    if(karta.value==="QUEEN")
+           this.state.ownedCards.map((card)=>{
+                if(isNaN(card.value)){
+                    if(card.value==="QUEEN")
                     punktacja+=3
-                    if(karta.value==="KING")
+                    if(card.value==="KING")
                     punktacja+=4
-                    if(karta.value==="JACK")
+                    if(card.value==="JACK")
                     punktacja+=2
-                    if(karta.value==="ACE")
+                    if(card.value==="ACE")
                     punktacja+=11
                 }
                 else{
-                    punktacja+=parseInt(karta.value)
+                    punktacja+=parseInt(card.value)
                 }
             })
         return(punktacja)

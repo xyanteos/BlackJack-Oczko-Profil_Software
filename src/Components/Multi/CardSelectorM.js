@@ -8,14 +8,14 @@ const CardSelectorM = (props)=>{
     {
 
         //console.log(props)
-        if(!props.zakonczono)
+        if(!props.ended)
         {
-            const karty = props.listaGraczy[props.currentPlayer].posiadaneKarty.map((karta)=>{
+            const karty = props.playersList[props.currentPlayer].posiadaneKarty.map((karta)=>{
                 return (<div key={karta.code}><img src={karta.image} key={karta.code}/></div>)
             })
-            //console.log(props.listaGraczy[props.currentPlayer].posiadaneKarty)
+            //console.log(props.playersList[props.currentPlayer].posiadaneKarty)
             return(
-                <div className="karty">
+                <div className="cards">
                     {karty}
                 </div>
             )
